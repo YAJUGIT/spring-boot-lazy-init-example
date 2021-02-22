@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <dockerfile-maven-version>1.4.3</dockerfile-maven-version>
     </properties>
 
     <dependencies>
@@ -40,14 +41,37 @@
         </dependency>
     </dependencies>
 
-    <build>
+     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+                <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>${dockerfile-maven-version}</version>
+                        <executions>
+                                <execution>
+                                        <id>default</id>
+                                        <goals>
+                                                <goal>build</goal>
+                                                <goal>push</goal>
+                                        </goals>
+                                </execution>
+                        </executions>
+                        <configuration>
+                                <username>yajudocker</username>
+                                <password>ca9a5c45-4aa5-47ee-a198-61eb5e6effa5</password>
+                                <repository>yajudocker/spring-kubrenetes</repository>
+                                <tag>${project.version}</tag>
+                                <buildArgs>
+                                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                                </buildArgs>
+                        </configuration>
+                </plugin>
         </plugins>
-    </build>
+</build>
 
     <repositories>
         <repository>
